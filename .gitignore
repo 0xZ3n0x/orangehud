@@ -1,0 +1,15 @@
+# OS / editor
+.DS_Store
+.idea/
+.vscode/
+*.swp
+*~
+
+# Build trees and artifacts
+build/
+.cache/
+*.o
+*.a
+*.elf
+compile_commands.json
+build-host/

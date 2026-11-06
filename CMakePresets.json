@@ -1,0 +1,127 @@
+{
+  "version": 3,
+  "cmakeMinimumRequired": {
+    "major": 3,
+    "minor": 21,
+    "patch": 0
+  },
+  "configurePresets": [
+    {
+      "name": "host-base",
+      "hidden": true,
+      "displayName": "Host unit tests (host compiler, no PS5 SDK)",
+      "generator": "Ninja",
+      "binaryDir": "${sourceDir}/build-host/${presetName}",
+      "cacheVariables": {
+        "CMAKE_C_COMPILER": "clang",
+        "CMAKE_CXX_COMPILER": "clang++",
+        "ORANGEHUD_BUILD_TESTS": "ON"
+      }
+    },
+    {
+      "name": "debug",
+      "inherits": "host-base",
+      "displayName": "Host tests, Debug"
+    },
+    {
+      "name": "asan",
+      "inherits": "host-base",
+      "displayName": "Host tests, AddressSanitizer",
+      "cacheVariables": {
+        "CMAKE_C_FLAGS": "-fsanitize=address -fno-omit-frame-pointer -g",
+        "CMAKE_CXX_FLAGS": "-fsanitize=address -fno-omit-frame-pointer -g",
+        "CMAKE_EXE_LINKER_FLAGS": "-fsanitize=address"
+      }
+    },
+    {
+      "name": "tsan",
+      "inherits": "host-base",
+      "displayName": "Host tests, ThreadSanitizer",
+      "cacheVariables": {
+        "CMAKE_C_FLAGS": "-fsanitize=thread -fno-omit-frame-pointer -g",
+        "CMAKE_CXX_FLAGS": "-fsanitize=thread -fno-omit-frame-pointer -g",
+        "CMAKE_EXE_LINKER_FLAGS": "-fsanitize=thread"
+      }
+    },
+    {
+      "name": "ps5-base",
+      "hidden": true,
+      "displayName": "PS5 payload (needs PS5_PAYLOAD_SDK and ninja)",
+      "generator": "Ninja",
+      "binaryDir": "${sourceDir}/build/${presetName}",
+      "toolchainFile": "$env{PS5_PAYLOAD_SDK}/toolchain/prospero.cmake",
+      "environment": {
+        "PATH": "$env{PS5_PAYLOAD_SDK}/bin:$penv{PATH}"
+      },
+      "cacheVariables": {
+        "PS5_PAYLOAD_SDK": "$env{PS5_PAYLOAD_SDK}"
+      }
+    },
+    {
+      "name": "ps5-release",
+      "inherits": "ps5-base",
+      "displayName": "PS5 payload, Release",
+      "cacheVariables": {
+        "CMAKE_BUILD_TYPE": "Release"
+      }
+    },
+    {
+      "name": "ps5-debug",
+      "inherits": "ps5-base",
+      "displayName": "PS5 payload, Debug",
+      "cacheVariables": {
+        "CMAKE_BUILD_TYPE": "Debug",
+        "ORANGEHUD_LOGGING": "ON"
+      }
+    }
+  ],
+  "buildPresets": [
+    {
+      "name": "debug",
+      "configurePreset": "debug"
+    },
+    {
+      "name": "asan",
+      "configurePreset": "asan"
+    },
+    {
+      "name": "tsan",
+      "configurePreset": "tsan"
+    },
+    {
+      "name": "ps5-release",
+      "configurePreset": "ps5-release"
+    },
+    {
+      "name": "ps5-debug",
+      "configurePreset": "ps5-debug"
+    }
+  ],
+  "testPresets": [
+    {
+      "name": "host-base",
+      "hidden": true,
+      "output": {
+        "outputOnFailure": true
+      }
+    },
+    {
+      "name": "debug",
+      "inherits": "host-base",
+      "configurePreset": "debug"
+    },
+    {
+      "name": "asan",
+      "inherits": "host-base",
+      "configurePreset": "asan"
+    },
+    {
+      "name": "tsan",
+      "inherits": "host-base",
+      "configurePreset": "tsan",
+      "environment": {
+        "TSAN_OPTIONS": "halt_on_error=0 exitcode=66"
+      }
+    }
+  ]
+}

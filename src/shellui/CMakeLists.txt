@@ -1,0 +1,7 @@
+if(NOT ORANGEHUD_BUILD_TESTS)
+	file(GLOB_RECURSE SHELLUI_SOURCES CONFIGURE_DEPENDS *.c *.cpp *.h *.hpp)
+	set(SHELLUI_WARNINGS -Wno-nested-anon-types -Wno-gnu-anonymous-struct -Wno-zero-length-array -Wno-keyword-macro)
+	orange_elf(shellui "shellui.elf" "${SHELLUI_WARNINGS}" ${SHELLUI_SOURCES})
+	target_include_directories(shellui PRIVATE ${CMAKE_CURRENT_SOURCE_DIR})
+	target_link_libraries(shellui PUBLIC orange_detour orange_proc orange_platform)
+endif()

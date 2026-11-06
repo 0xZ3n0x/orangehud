@@ -1,0 +1,26 @@
+BasedOnStyle: Microsoft
+ColumnLimit: 200
+PointerAlignment: Left
+InsertBraces: true
+SortIncludes: CaseSensitive
+IncludeBlocks: Regroup
+IncludeCategories:
+  # 1. standard library (C and C++)
+  - Regex: '^<(assert|ctype|errno|inttypes|limits|math|signal|stdarg|stdbool|stddef|stdint|stdio|stdlib|string|time)\.h>$'
+    Priority: 1
+  - Regex: '^<[a-z_0-9]+>$'
+    Priority: 1
+  # 2. SDK and system headers
+  - Regex: '^<(sys|machine|ps5|netinet|arpa)/'
+    Priority: 2
+  # 3. third party
+  - Regex: '^<hde64/'
+    Priority: 3
+  - Regex: '^"(pt|elfldr)\.h"$'
+    Priority: 3
+  # 4. this project
+  - Regex: '^"'
+    Priority: 4
+  # remaining <name.h>: system headers
+  - Regex: '^<[a-z_0-9]+\.h>$'
+    Priority: 2

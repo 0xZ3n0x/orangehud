@@ -1,0 +1,30 @@
+# OrangeHUD configuration. Changes apply within a second.
+# Do not put comments after a value.
+
+[meta]
+# Config format version; a file with another value is ignored.
+schema_version=1
+
+[rest_mode]
+# Seconds to wait before re-injecting the HUD after Rest Mode (0-255).
+resume_reinject_delay_seconds=10
+
+[overlay]
+# Show the HUD (true, false).
+enabled=true
+# Translucent box behind the panel (true, false).
+background=true
+# CPU temperature and usage (true, false). Ignored while cpu_usage_mode is per_core.
+show_cpu=true
+# CPU usage as one average or per core (average, per_core).
+cpu_usage_mode=per_core
+# Hottest SoC sensor and its power (true, false).
+show_soc=true
+# In-game frame rate (true, false).
+show_fps=true
+# 1% and 0.1% low FPS next to the frame rate (true, false).
+show_fps_lows=true
+# Memory the game has mapped, against its budget (true, false).
+show_memory=true
+# Row order, comma-separated (fps, cpu, gpu, memory).
+order=fps,cpu,gpu,memory
